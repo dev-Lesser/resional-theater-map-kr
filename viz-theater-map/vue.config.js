@@ -6,5 +6,5 @@ module.exports = {
 
 module.exports = {
   outputDir: './dist',
-  publicPath: '/public_facilities_analysis_kr/'
+  publicPath: '/public_facilities_analysis_kr/viz-theater-map/'
 }
