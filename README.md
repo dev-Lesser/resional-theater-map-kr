@@ -11,4 +11,4 @@
 - viz-theater-map
 
 
-![대시보드 화면]('./sample.png)
+![대시보드 화면](./sample.png)
