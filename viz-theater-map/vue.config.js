@@ -3,7 +3,3 @@ module.exports = {
     'vuetify'
   ]
 }
-
-module.exports = {
-  publicPath: '/public_facilities_analysis_kr'
-}
