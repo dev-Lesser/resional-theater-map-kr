@@ -1,43 +1,16 @@
 <template>
 <div>
-    <v-navigation-drawer id='nav-bar' app permanent  width="100px"  dark  >
-        
+    <v-navigation-drawer id='nav-bar' app permanent  width="70px"  dark mobile-breakpoint="400" >
         <div v-for='(ival, ikey) in sidebarMenu' :key='ikey'>
-        <v-btn v-if='!loading'  outlined :color='ival.color' class='pa-3 ma-2' v-on:click='getGeoJson(ival)'>
+        <v-btn small v-if='!loading'  outlined :color='ival.color' class='pa-3 ma-2' v-on:click='getGeoJson(ival)'>
             {{ikey }}
         </v-btn>
-        <v-btn v-else depressed disabled class='pa-3 ma-2' >
+        <v-btn small v-else depressed disabled class='pa-3 ma-2' >
             {{ikey}}
         </v-btn>
         </div>
     </v-navigation-drawer>
-        <v-speed-dial id="mobile-nav-bar" v-model="fab"  :bottom="bottom" :transition="transition" :direction="direction">
-            <template v-slot:activator>
-                <v-btn
-                v-model="fab"
-                class="scroll-icon"
-                fab
-                >
-                    <v-icon v-if="fab">
-                        mdi-close
-                    </v-icon>
-                    <v-icon v-else>
-                        mdi-magnify
-                    </v-icon>
-                </v-btn>
-            </template>
-            <v-sheet>
-                <v-card width=100% >
-                <v-row >
-                    <v-col cols="3" md="3" lg="3" sm="2"  v-for='(ival, ikey) in sidebarMenu' :key='ikey' >
-                        <v-btn v-if='!loading'  outlined :color='ival.color' class='pa-3 ma-2' v-on:click='getGeoJson(ival)'>
-                            {{ikey }}
-                        </v-btn>
-                    </v-col>
-                </v-row>
-                </v-card>
-            </v-sheet>
-        </v-speed-dial>
+        
 </div>
 </template>
 <script>
@@ -60,10 +33,7 @@ export default ({
         analysisData() {
             return this.$store.state.analysisData;
         },
-        theaterData() {
-            return this.$store.state.theaterData;
-        },
-   
+    
         loading(){
             return this.$store.state.loading;
         }
@@ -71,32 +41,36 @@ export default ({
   
     methods:{
         async getGeoJson(event){
+            if (this.geojson == event.geojson) return null
+       
             this.$store.state.loading = true
             this.geojson = event.geojson
             this.$store.state.center = event.center
             this.$store.state.fillColor = event.color
             var response = await axios.get(`https://lesser-korea-geojson.s3.ap-northeast-2.amazonaws.com/${this.geojson}`)
             this.$store.state.geojsonData = response.data
-            var data = this.filterSido(this.geojson.split('.')[0])
-            // console.log(this.$store.state.selectedSido)
+            var data = await this.filterSido(this.geojson.split('.')[0])
             this.$store.state.loading = false
             this.$store.state.filterData = data
+            
         },
+      
         filterSido(sido){
+            let self = this;
             switch(sido){
                 case 'seoul':
                     var i =0;
-                    this.$store.state.selectedSido = "서울특별시"
-                    this.$store.state.filterData = []
-                    for (i in this.analysisData){
-                        if(this.analysisData[i].sido == '서울특별시'){
-                            this.$store.state.filterData.push(this.analysisData[i])
+                    // 
+                    self.$store.state.selectedSido="서울특별시"
+                    for (i in self.analysisData){
+                        if(self.analysisData[i].sido == '서울특별시'){
+                            self.$store.state.filterData.push(this.analysisData[i])
                         }
                     }
                     break
                 case 'busan':
-                    this.$store.state.selectedSido = "부산광역시"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="부산광역시"
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '부산광역시'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -105,8 +79,8 @@ export default ({
                 
                     break
                 case 'daegu':
-                    this.$store.state.selectedSido = "대구광역시"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="대구광역시"
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '대구광역시'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -115,8 +89,8 @@ export default ({
                 
                     break
                 case 'incheon':
-                    this.$store.state.selectedSido = "인천광역시"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="인천광역시"
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '인천광역시'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -124,8 +98,8 @@ export default ({
                     }
                     break
                 case 'gwangju':
-                    this.$store.state.selectedSido = "광주광역시"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="광주광역시"
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '광주광역시'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -133,8 +107,9 @@ export default ({
                     }
                     break
                 case 'daejeon':
-                    this.$store.state.selectedSido = "대전광역시"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="대전광역시"
+                    
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '대전광역시'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -142,8 +117,9 @@ export default ({
                     }
                     break
                 case 'ulsan':
-                    this.$store.state.selectedSido = "울산광역시"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="울산광역시"
+                    
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '울산광역시'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -151,17 +127,19 @@ export default ({
                     }
                     break
                 case 'sejong':
-                    this.$store.state.selectedSido = "세종특별자치시"
-                    this.$store.state.filterData = []
-                    for (i in this.analysisData){
-                        if(this.analysisData[i].sido == '세종특별자치시'){
-                            this.$store.state.filterData.push(this.analysisData[i])
+                    
+                    self.$store.state.selectedSido="세종특별자치시"
+                    
+                    for (i in self.analysisData){
+                        if(self.analysisData[i].sido == '세종특별자치시'){
+                            self.$store.state.filterData.push(self.analysisData[i])
                         }
                     }
                     break
                 case 'gyeonggi':
-                    this.$store.state.selectedSido = "경기도"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="경기도"
+                    
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '경기도'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -169,8 +147,9 @@ export default ({
                     }
                     break
                 case 'gangwon':
-                    this.$store.state.selectedSido = "강원도"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="강원도"
+                    
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '강원도'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -178,8 +157,9 @@ export default ({
                     }
                     break
                 case 'chungbuk':
-                    this.$store.state.selectedSido = "충청북도"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="충청북도"
+                    
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '충청북도'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -187,8 +167,9 @@ export default ({
                     }
                     break
                 case 'chungnam':
-                    this.$store.state.selectedSido = "충청남도"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="충청남도"
+                    
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '충청남도'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -196,8 +177,9 @@ export default ({
                     }
                     break
                 case 'jeonbuk':
-                    this.$store.state.selectedSido = "전라북도"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="전라북도"
+                    
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '전라북도'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -205,8 +187,9 @@ export default ({
                     }
                     break
                 case 'jeonnam':
-                    this.$store.state.selectedSido = "전라남도"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="전라남도"
+                    
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '전라남도'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -214,8 +197,9 @@ export default ({
                     }
                     break
                 case 'kyeongbuk':
-                    this.$store.state.selectedSido = "경상북도"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="경상북도"
+                    
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '경상북도'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -223,8 +207,9 @@ export default ({
                     }
                     break
                 case 'kyeongnam':
-                    this.$store.state.selectedSido = "경상남도"
-                    this.$store.state.filterData = []
+                    
+                    this.$store.state.selectedSido="경상남도"
+                    
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '경상남도'){
                             this.$store.state.filterData.push(this.analysisData[i])
@@ -232,11 +217,12 @@ export default ({
                     }
                     break
                 case 'jeju':
-                    this.$store.state.selectedSido = "제주특별자치도"
-                    this.$store.state.filterData = []
-                    for (i in this.analysisData){
-                        if(this.analysisData[i].sido == '제주특별자치도'){
-                            this.$store.state.filterData.push(this.analysisData[i])
+                    
+                    self.$store.state.selectedSido="제주특별자치도"
+                    
+                    for (i in self.analysisData){
+                        if(self.analysisData[i].sido == '제주특별자치도'){
+                            self.$store.state.filterData.push(self.analysisData[i])
                         }
                     }
                     break
@@ -271,12 +257,12 @@ export default ({
     #nav-bar{
         display: none;
     }
-} */
-@media screen and (min-width: 0px){
+}
+@media screen and (min-width: 600px){
     #mobile-nav-bar{
         
         display: none;
         
     }
-}
+} */
 </style>

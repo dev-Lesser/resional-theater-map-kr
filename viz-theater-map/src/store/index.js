@@ -12,7 +12,16 @@ export default new Vuex.Store({
     geojsonData: null,
     fillColor: '#53CFDA',
     analysisData: null,
-    seletedSido: null,
+    selectedSido: '서울특별시',
+    statisticData: [0,0,0,0],
+    chartData:{},
+    chartOptions:{},
+    colormap:[
+      {color:'#26678F',value:'0 - 3.5km 거리'},
+      {color:'#6FC7A4',value:'3.5 - 8.0km 거리'},
+      {color:'#FDC771',value:'8.0 - 13.6km 거리'},
+      {color:'#D53E47',value:'13.6km 이상'}
+    ],
     dataList:{
         '서울':{color:'#53CFDA', center: [37.57,     127],      geojson:'seoul.geo.json',},
         '부산':{color:'#89903A', center: [35.2,   129.13],      geojson:'busan.geo.json',},
