@@ -166,7 +166,7 @@ export default {
   #map {
     flex: 1;
     z-index: 0;
-    height: 96%;
+    height: 94%;
   }
   .now-loading-page{
     display: flex;

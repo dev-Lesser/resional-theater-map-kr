@@ -198,7 +198,7 @@ docker-compose.local.yml
 *.azcli
 
 # compiled output
-/dist
+#/dist
 /tmp
 /out-tsc
 

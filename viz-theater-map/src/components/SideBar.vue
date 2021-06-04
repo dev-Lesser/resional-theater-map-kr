@@ -78,6 +78,7 @@ export default ({
             var response = await axios.get(`https://lesser-korea-geojson.s3.ap-northeast-2.amazonaws.com/${this.geojson}`)
             this.$store.state.geojsonData = response.data
             var data = this.filterSido(this.geojson.split('.')[0])
+            // console.log(this.$store.state.selectedSido)
             this.$store.state.loading = false
             this.$store.state.filterData = data
         },
@@ -85,6 +86,7 @@ export default ({
             switch(sido){
                 case 'seoul':
                     var i =0;
+                    this.$store.state.selectedSido = "서울특별시"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '서울특별시'){
@@ -93,6 +95,7 @@ export default ({
                     }
                     break
                 case 'busan':
+                    this.$store.state.selectedSido = "부산광역시"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '부산광역시'){
@@ -102,6 +105,7 @@ export default ({
                 
                     break
                 case 'daegu':
+                    this.$store.state.selectedSido = "대구광역시"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '대구광역시'){
@@ -111,6 +115,7 @@ export default ({
                 
                     break
                 case 'incheon':
+                    this.$store.state.selectedSido = "인천광역시"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '인천광역시'){
@@ -119,6 +124,7 @@ export default ({
                     }
                     break
                 case 'gwangju':
+                    this.$store.state.selectedSido = "광주광역시"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '광주광역시'){
@@ -127,6 +133,7 @@ export default ({
                     }
                     break
                 case 'daejeon':
+                    this.$store.state.selectedSido = "대전광역시"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '대전광역시'){
@@ -135,6 +142,7 @@ export default ({
                     }
                     break
                 case 'ulsan':
+                    this.$store.state.selectedSido = "울산광역시"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '울산광역시'){
@@ -143,6 +151,7 @@ export default ({
                     }
                     break
                 case 'sejong':
+                    this.$store.state.selectedSido = "세종특별자치시"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '세종특별자치시'){
@@ -151,6 +160,7 @@ export default ({
                     }
                     break
                 case 'gyeonggi':
+                    this.$store.state.selectedSido = "경기도"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '경기도'){
@@ -159,6 +169,7 @@ export default ({
                     }
                     break
                 case 'gangwon':
+                    this.$store.state.selectedSido = "강원도"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '강원도'){
@@ -167,6 +178,7 @@ export default ({
                     }
                     break
                 case 'chungbuk':
+                    this.$store.state.selectedSido = "충청북도"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '충청북도'){
@@ -175,6 +187,7 @@ export default ({
                     }
                     break
                 case 'chungnam':
+                    this.$store.state.selectedSido = "충청남도"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '충청남도'){
@@ -183,6 +196,7 @@ export default ({
                     }
                     break
                 case 'jeonbuk':
+                    this.$store.state.selectedSido = "전라북도"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '전라북도'){
@@ -191,6 +205,7 @@ export default ({
                     }
                     break
                 case 'jeonnam':
+                    this.$store.state.selectedSido = "전라남도"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '전라남도'){
@@ -199,6 +214,7 @@ export default ({
                     }
                     break
                 case 'kyeongbuk':
+                    this.$store.state.selectedSido = "경상북도"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '경상북도'){
@@ -207,6 +223,7 @@ export default ({
                     }
                     break
                 case 'kyeongnam':
+                    this.$store.state.selectedSido = "경상남도"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '경상남도'){
@@ -215,6 +232,7 @@ export default ({
                     }
                     break
                 case 'jeju':
+                    this.$store.state.selectedSido = "제주특별자치도"
                     this.$store.state.filterData = []
                     for (i in this.analysisData){
                         if(this.analysisData[i].sido == '제주특별자치도'){

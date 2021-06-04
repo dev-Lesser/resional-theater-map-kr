@@ -3,3 +3,8 @@ module.exports = {
     'vuetify'
   ]
 }
+
+module.exports = {
+  outputDir: './dist',
+  publicPath: '/public_facilities_analysis_kr/'
+}

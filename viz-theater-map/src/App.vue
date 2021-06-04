@@ -4,6 +4,7 @@
       <Header />
       <side-bar />
       <map-view/>
+      <color-bar />
     </v-main>
   </v-app>
 </template>
@@ -12,6 +13,7 @@
 import SideBar from '@/components/SideBar'
 import MapView from '@/components/MapView';
 import Header from '@/components/Header'
+import ColorBar from '@/components/ColorBar'
 import axios from 'axios'
 export default {
   name: 'App',
@@ -19,7 +21,8 @@ export default {
   components: {
     SideBar,
     MapView,
-    Header
+    Header,
+    ColorBar
   },
   data(){
     return{

@@ -12,6 +12,7 @@ export default new Vuex.Store({
     geojsonData: null,
     fillColor: '#53CFDA',
     analysisData: null,
+    seletedSido: null,
     dataList:{
         '서울':{color:'#53CFDA', center: [37.57,     127],      geojson:'seoul.geo.json',},
         '부산':{color:'#89903A', center: [35.2,   129.13],      geojson:'busan.geo.json',},
