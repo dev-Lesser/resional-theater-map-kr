@@ -109,7 +109,7 @@
                     </v-tabs>
                 </template>
         </v-app-bar>
-        <v-navigation-drawer class="sheet" absolute right v-model="sheet" width="200px">
+        <v-navigation-drawer class="sheet" absolute right hide-overlay v-model="sheet" width="200px">
             <v-icon class="pl-3 mb-2" @click="sheet = !sheet">mdi-close</v-icon>
             <pie-chart :chartdata="statisticData" :options="chartOptions" class='chart-graph' />
             <color-bar />
