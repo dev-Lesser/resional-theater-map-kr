@@ -8,7 +8,7 @@ export default new Vuex.Store({
     loading: false,
     selected: false,
     sido: '서울',
-    center: [35.5,     127],
+    center: [35.4, 127.9],
     zoom: 7,
     geojson: 'seoul.geo.json',
     geojsonData: null,
@@ -25,11 +25,11 @@ export default new Vuex.Store({
       {color:'#D53E47',value:'13.6km 이상'}
     ],
     dataList:{
-      '전체':{center: [36.1, 127.4],      geojson:'all',},
+      '전체':{center: [35.4, 127.9],     geojson:'all',},
         '서울':{color:'#53CFDA', center: [37.47,     127],      geojson:'seoul.geo.json',},
         '부산':{color:'#89903A', center: [35.2,   129.13],      geojson:'busan.geo.json',},
         '대구':{color:'#FF7994', center: [35.79,  128.58],      geojson:'daegu.geo.json',},
-        '인천':{color:'#FF8860', center: [37.469, 126.57],      geojson:'incheon.geo.json',    },
+        '인천':{color:'#FF8860', center: [37.469, 126.57],      geojson:'incheon.geo.json',},
         '광주':{color:'#90D635', center: [35.126, 126.83],      geojson:'gwangju.geo.json',},
         '대전':{color:'#26E119', center: [36.32,  127.37],      geojson:'daejeon.geo.json',},
         '울산':{color:'#F9C002', center: [35.52,  129.24],      geojson:'ulsan.geo.json',},
@@ -44,10 +44,27 @@ export default new Vuex.Store({
         '경남':{color:'#BC7576', center: [35.259,128.564],      geojson:'kyeongnam.geo.json',},
         '제주':{color:'#696B7E', center: [33.36,  126.54],      geojson:'jeju.geo.json',}
     },
-    filterData:[
-        
-    ],
-    theaterData: []
+    filterData:[],
+    theaterData: [],
+    allData:{
+      '서울':{center: [37.47,     127], data: [460,7,0,0]},
+      '부산':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '대구':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '인천':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '광주':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '대전':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '울산':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '세종':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '경기':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '강원':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '충북':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '충남':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '전북':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '전남':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '경북':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '경남':{center: [35.2,   129.13], data: [160,30,2,0]},
+      '제주':{center: [35.2,   129.13], data: [160,30,2,0]},
+    }
 
 
   },

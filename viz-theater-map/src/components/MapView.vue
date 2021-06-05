@@ -79,7 +79,7 @@ export default {
     },
     async mounted() {
       this.$store.state.loading = true;
-      this.$store.state.center = [36.1, 127.4];
+      this.$store.state.center = [35.4, 127.9];
       this.$store.state.loading = false;
 
     },
@@ -148,10 +148,10 @@ export default {
       }
     },
     watch: {
-      changedCenter: function(center) {
+      changedCenter: function() {
         [this.num1,this.num2,this.num3,this.num4] = [0,0,0,0]
         this.geojson = this.$store.state.geojsonData
-        this.$store.state.center = center;
+        //this.$store.state.center = center;
       },
       changedSido: function(){
         [this.num1,this.num2,this.num3,this.num4] = [0,0,0,0]
