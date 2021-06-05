@@ -30,7 +30,6 @@ import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 import * as Vue2Leaflet from 'vue2-leaflet'
 import loadingImg from '@/assets/loading.png'
 import {LMap, LTileLayer, LGeoJson} from "vue2-leaflet";
-import axios from 'axios'
 import marker from '@/assets/marker.png'
 import 'leaflet/dist/leaflet.css'
 export default {
@@ -80,11 +79,6 @@ export default {
     },
     async mounted() {
       this.$store.state.loading = true;
-      
-      var response = await axios.get(`https://lesser-korea-geojson.s3.ap-northeast-2.amazonaws.com/seoul.geo.json`)
-      var data = response.data
-      this.geojson = data;
-      this.$store.state.geojsonData = this.geojson
       this.$store.state.center = [36.1, 127.4];
       this.$store.state.loading = false;
 
