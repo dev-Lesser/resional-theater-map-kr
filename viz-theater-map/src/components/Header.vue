@@ -9,7 +9,7 @@
                         &nbsp; 분포그래프</v-chip>
                 </v-flex>
                 <v-flex xs10 sm10 md10 class="cols-mobile">
-                    <a href="https://soprize.so/question/51">프로젝트</a> &nbsp; 지역을 선택해주세요.
+                    <a href="https://soprize.so/question/51">프로젝트</a> &nbsp; 아래에서 지역을 선택해주세요.
                     <v-chip v-if="show & !loading" color="red darken-2" small class="ml-5" @click="sheet = !sheet">
                         <v-icon>mdi-chart-pie</v-icon>
                         &nbsp; 분포그래프</v-chip>
@@ -203,9 +203,26 @@
            
         },
         methods: {
+            async initMap(){
+                // 중심좌표 변경
+                this.$store.state.center = [36.1, 127.4]
+                // zoom 변경
+                this.$store.state.zoom = 7
+                // marker, geojson 삭제
+                this.$store.state.seleted = false
+
+                this.$store.state.loading=false;
+            },
             async getGeoJson(event){
                 if (this.geojson == event.geojson) return null
+                if (event.geojson=='all'){
+                    this.$store.state.loading = true;
+                    console.log(event)
+                    await this.initMap()
+                    return true
+                }
                 this.sheet = false;
+                this.show = true;
                 this.$store.state.showChart = false;
                 this.$store.state.seleted = true;
                 this.$store.state.loading = true;
