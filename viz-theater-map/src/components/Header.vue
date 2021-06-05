@@ -4,17 +4,18 @@
             <v-layout>
                 <v-flex xs8 sm8 md8 id="cols">
                     쏘프라이즈 시즌1 <a href="https://soprize.so/question/51">"영화 한 편 보는데도 지역별 격차?"</a> 의 프로젝트 입니다. 아래에서 시도명을 선택해주세요.
-                    <v-chip v-if="show & !loading" color="blue" small class="ml-5" @click="sheet = !sheet">
+                    <v-chip v-if="show & !loading" color="red darken-2" small class="ml-5" @click="sheet = !sheet">
                         <v-icon>mdi-chart-pie</v-icon>
                         &nbsp; 분포그래프</v-chip>
                 </v-flex>
                 <v-flex xs10 sm10 md10 class="cols-mobile">
                     <a href="https://soprize.so/question/51">프로젝트</a> &nbsp; 지역을 선택해주세요.
-                    <v-chip v-if="show & !loading" color="blue" small class="ml-5" @click="sheet = !sheet">
+                    <v-chip v-if="show & !loading" color="red darken-2" small class="ml-5" @click="sheet = !sheet">
                         <v-icon>mdi-chart-pie</v-icon>
                         &nbsp; 분포그래프</v-chip>
                 </v-flex>
                 <v-flex xs2 sm2 md2 class="desktop-explain">
+                    <v-icon class="mr-3" color="#FFFFFF">mdi-information-outline</v-icon>
                     <v-menu v-for="i in colorInfo" :key=i.info> 
                         <template v-slot:activator="{ on: menu, attrs }">
                             <v-tooltip bottom>
@@ -52,11 +53,11 @@
                     </v-menu>
                     
                 </v-flex>
-                <v-flex xs2 sm2 md2 class="mobile-explain">
+                <v-flex xs1 sm1 md1 class="mobile-explain">
                     <v-menu style="z-index:500;" v-model="info_on" offset-y open-on-hover v-if="info">
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn v-bind="attrs" v-on="on" text icon>
-                            <v-icon small color="#FFFFFF">mdi-information-outline</v-icon>
+                            <v-icon color="#FFFFFF">mdi-information-outline</v-icon>
                             </v-btn>
                         </template>
                         <v-card width="300px" >
@@ -420,7 +421,7 @@
         z-index: 0
     }
     /* 모바일로 하려고 할때 display none */
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 1000px) {
         #cols {
             display: none;
 
@@ -435,7 +436,7 @@
         }
     }
     /* 데스크탑으로 하려고 할때 display none */
-    @media screen and (min-width: 600px) {
+    @media screen and (min-width: 1000px) {
         .cols-mobile {
             display: none;
         }

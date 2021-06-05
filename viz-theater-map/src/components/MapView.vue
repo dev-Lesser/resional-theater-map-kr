@@ -1,7 +1,6 @@
 <template>
-  <!-- <div id="map"></div> -->
   <div app id="map">
-    <!-- <img src="@/assets/markerClusterGroup.svg"> -->
+    
     <v-overlay :value="loading" :z-index="2"></v-overlay>
     <l-map v-if='!loading' :zoom="zoom" :center="changedCenter" style="height: 100%; width: 100%" :min-zoom="6" :max-zoom="15">
       <l-tile-layer :url="url" :attribution="attribution" />
@@ -13,14 +12,15 @@
           </v-marker>
         </v-marker-cluster>
     </l-map>
-    <v-card v-else class='now-loading-page'>
-      <v-card-title>
-         파일을 분석하고 있습니다. 잠시만 기다려 주세요...
-        <v-progress-linear
-      color="cyan"
-    ></v-progress-linear>
-      </v-card-title>
+    <v-card v-else class='now-loading-page' flat>
+      <v-img :src="img"
+        max-height="200"
+        max-width="200" 
+        ></v-img>
+         <v-card-title>파일을 분석하고 있습니다. 잠시만 기다려 주세요...</v-card-title>
+  
     </v-card>
+    
   </div>
 </template>
 
@@ -28,7 +28,7 @@
 import { Icon } from 'leaflet';
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 import * as Vue2Leaflet from 'vue2-leaflet'
-
+import loadingImg from '@/assets/loading.png'
 import {LMap, LTileLayer, LGeoJson} from "vue2-leaflet";
 import axios from 'axios'
 import marker from '@/assets/marker.png'
@@ -53,6 +53,7 @@ export default {
         marker: marker,
         enableTooltip: true,
         zoom: 10,
+        img: loadingImg,
         center: [37.9, 127],
         fillColor: "",
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -211,6 +212,9 @@ export default {
     flex: 1;
     z-index: 2;
     height: 100%;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
   }
   .now-loading-page{
     display: flex;
