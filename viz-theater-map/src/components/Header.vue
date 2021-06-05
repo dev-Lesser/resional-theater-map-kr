@@ -165,8 +165,6 @@
             analysisData() {
                 return this.$store.state.analysisData;
             },
-    
-   
             loading() {
                 return this.$store.state.loading;
             },
@@ -205,9 +203,9 @@
            
         },
         methods: {
-            async initMap(){
+            initMap(){
                 // 중심좌표 변경
-                this.$store.state.center = [35.4, 127.9];
+                this.$store.state.center = [35.7, 127.9];
                 // zoom 변경
                 this.$store.state.zoom = 7
                 // marker, geojson 삭제
@@ -216,20 +214,25 @@
                 this.show = false;
                 this.$store.state.loading=false;
                 this.sheet  = false;
+                this.$store.state.minZoom = 7
+                this.$store.state.maxZoom = 7
             },
+
             async getGeoJson(event){
                 if (this.geojson == event.geojson) return null
                 if (event.geojson=='all'){
                     this.$store.state.loading = true;
-                    console.log(event)
-                    await this.initMap()
+                    this.initMap()
                     return true
                 }
+
                 this.sheet = false;
                 this.show = true;
                 this.$store.state.showChart = false;
                 this.$store.state.seleted = true;
                 this.$store.state.loading = true;
+                this.$store.state.minZoom = 4
+                this.$store.state.maxZoom = 15
                 this.$store.state.zoom = 10
                 this.geojson = event.geojson
                 this.$store.state.center = event.center

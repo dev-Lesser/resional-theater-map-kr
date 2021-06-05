@@ -1,16 +1,28 @@
 <template>
   <div app id="map">
-    
     <v-overlay :value="loading" :z-index="2"></v-overlay>
-    <l-map v-if='!loading' :zoom="zoom" :center="changedCenter" style="height: 100%; width: 100%" :min-zoom="6" :max-zoom="15">
+    <l-map v-if='!loading' :zoom="zoom" :center="changedCenter" class="leaflet-map"  :min-zoom="minZoom" :max-zoom="maxZoom">
       <l-tile-layer :url="url" :attribution="attribution" />
-      <l-geo-json v-if="$store.state.seleted" :geojson="geojsonData" :options="options" :options-style="styleFunction" />
+        <l-control-scale position="bottomleft" :imperial="false" :metric="true"></l-control-scale>
+
+        <l-geo-json v-if="$store.state.seleted" :geojson="geojsonData" :options="options" :options-style="styleFunction" />
 
         <v-marker-cluster v-if="$store.state.seleted" :options="clusterOptions">
           <v-marker v-for="(i,key) in theaterData" :key="key" :lat-lng="[i.y, i.x]"> <!-- 영화관 위치 -->
             <v-popup :content="i.poi_nm"></v-popup>
+            
           </v-marker>
         </v-marker-cluster>
+
+        <v-marker v-for="i in allData" :key="i.name" :lat-lng="i.center" v-else>
+          <l-icon
+                    :icon-size="dynamicSize"
+                    :icon-anchor="dynamicAnchor"
+                    :icon-url="i.img" >
+          </l-icon>
+          <l-tooltip ref="popup" >{{i.name}}</l-tooltip>
+          
+        </v-marker>
     </l-map>
     <v-card v-else class='now-loading-page' flat>
       <v-img :src="img"
@@ -29,7 +41,7 @@ import { Icon } from 'leaflet';
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 import * as Vue2Leaflet from 'vue2-leaflet'
 import loadingImg from '@/assets/loading.png'
-import {LMap, LTileLayer, LGeoJson} from "vue2-leaflet";
+import {LMap, LTileLayer, LGeoJson,LIcon,LControlScale, LTooltip} from "vue2-leaflet";
 import marker from '@/assets/marker.png'
 import 'leaflet/dist/leaflet.css'
 export default {
@@ -38,21 +50,23 @@ export default {
       'v-marker-cluster': Vue2LeafletMarkerCluster,
       'v-marker': Vue2Leaflet.LMarker,
       'v-popup': Vue2Leaflet.LPopup,
+
+      LIcon,
       LMap,
       LTileLayer,
       LGeoJson,
-    },
-    props:{
-      color: String
+      LControlScale,
+      LTooltip
     },
 
     data() {
       return {
+        iconSize: 50,
         show: true,
         marker: marker,
         enableTooltip: true,
         img: loadingImg,
-        center: [35.9, 127],
+        center: [35.7, 127.9],
         fillColor: "",
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution: '',
@@ -79,11 +93,29 @@ export default {
     },
     async mounted() {
       this.$store.state.loading = true;
-      this.$store.state.center = [35.4, 127.9];
+      this.$store.state.center = [35.7, 127.9];
       this.$store.state.loading = false;
-
+      this.$store.state.minZoom = 7
+      this.$store.state.maxZoom = 7
+      // await this.showInitialAllChart()
+      
     },
     computed: {
+      minZoom(){
+        return this.$store.state.minZoom
+      },
+      maxZoom(){
+        return this.$store.state.maxZoom
+      },
+      allData(){
+        return this.$store.state.allData;
+      },
+      dynamicSize () {
+        return [this.iconSize, this.iconSize ];
+      },
+      dynamicAnchor () {
+        return [this.iconSize / 2, this.iconSize * 1.15];
+      },
       zoom(){
         return this.$store.state.zoom;
       },
@@ -162,7 +194,7 @@ export default {
 
     },
     methods: {
-      
+     
       pickColor(dong_name){
         let self = this;
         
@@ -191,7 +223,6 @@ export default {
           }
         }
         this.$store.state.statisticData = [self.num1,self.num2,self.num3,self.num4]
-        // console.log(this.$store.state.statisticData)
         return color
       },
     }
@@ -199,7 +230,6 @@ export default {
 </script>
 
 <style scoped>
-  /* @import "../../node_modules/leaflet/dist/leaflet.css"; */
   @import "~leaflet/dist/leaflet.css";
   @import "~leaflet.markercluster/dist/MarkerCluster.css";
   @import "~leaflet.markercluster/dist/MarkerCluster.Default.css";
@@ -207,20 +237,25 @@ export default {
     flex: 1;
     z-index: 2;
     height: 100%;
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
+
   }
   .now-loading-page{
     display: flex;
     align-items: center;
     justify-content: center;
   }
+  .deploy-all-chart{
+    z-index:1000000;
+  }
+  .leaflet-map{
+    width: 100%;
+    height: 100%;
+  }
   @media screen and (max-width: 600px){
     #map{
         flex: 1;
         z-index: 2;
-        height: 100%;
+        height: 92%;
         
     }
 }
