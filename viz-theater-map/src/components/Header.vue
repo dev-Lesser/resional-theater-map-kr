@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-app-bar class="tool-bar" color="blue-grey darken-3" dark >
+        <v-app-bar class="tool-bar" color="blue-grey darken-3" dark height=100 >
             <v-layout>
                 <v-flex xs8 sm8 md8 id="cols">
                     쏘프라이즈 시즌1 <a href="https://soprize.so/question/51">"영화 한 편 보는데도 지역별 격차?"</a> 의 프로젝트 입니다. 아래에서 시도명을 선택해주세요.
@@ -14,44 +14,49 @@
                         <v-icon>mdi-chart-pie</v-icon>
                         &nbsp; 분포그래프</v-chip>
                 </v-flex>
-                <v-flex xs2 sm2 md2 class="desktop-explain">
+                <v-flex xs4 sm4 md4 class="desktop-explain">
                     <v-icon class="mr-3" color="#FFFFFF">mdi-information-outline</v-icon>
+                    <v-row no-gutters>
                     <v-menu v-for="i in colorInfo" :key=i.info> 
                         <template v-slot:activator="{ on: menu, attrs }">
                             <v-tooltip bottom>
                             <template v-slot:activator="{ on: tooltip }">
+                                <v-col :cols="5" >
                                 <img
                                 v-bind:src="i.img "
                                 v-bind="attrs"
                                 v-on="{ ...tooltip, ...menu }"
                                 height=30px
-                                class="mr-1"
                                 />
+                                </v-col>
                                 
                             </template>
                             <span>{{ i.info }}</span>
                             </v-tooltip>
                         </template>
                     </v-menu>
+                    </v-row>
+                    <v-row no-gutters>
                     <v-menu v-for="i in fieldInfo" :key=i.info> 
                         <template v-slot:activator="{ on: menu, attrs }">
                             <v-tooltip bottom>
                             <template v-slot:activator="{ on: tooltip }">
-                                <v-btn
-                                class="ml-1"
-                                :color="i.color"
-                                v-bind="attrs"
-                                v-on="{ ...tooltip, ...menu }"
-                                small
-                                height=30px
-                                />
+                                <v-col :cols="4" >
+                                    <v-btn
+                                    :color="i.color"
+                                    v-bind="attrs"
+                                    v-on="{ ...tooltip, ...menu }"
+                                    small
+                                    height=30px
+                                    />
+                                </v-col>
                                 
                             </template>
                             <span>{{ i.info }}</span>
                             </v-tooltip>
                         </template>
                     </v-menu>
-                    
+                    </v-row>
                 </v-flex>
                 <v-flex xs1 sm1 md1 class="mobile-explain">
                     <v-menu style="z-index:500;" v-model="info_on" offset-y open-on-hover v-if="info">
@@ -64,23 +69,21 @@
                             <v-card-text class="explain_modal_head">아이콘 설명</v-card-text>
                             <v-card-subtitle class="explain_modal_text">
                                 <v-row>
-                                    <v-col v-for="i in colorInfo" :key=i>
+                                    <v-col v-for="(i, key) in colorInfo" :key="key">
                                         <img :src="i.img" height=30px> 
                                         <div>{{i.info}}</div>
                                     </v-col>
 
                                 </v-row>
-                                <v-card-text class="explain_modal_head">필드 색상 설명</v-card-text>
+                                <v-card-text class="explain_modal_head">필드색상 설명</v-card-text>
                                 <v-row>
-                                    <v-col :cols="4" v-for="i in fieldInfo" :key=i>
+                                    <v-col :cols="4" v-for="(i,key) in fieldInfo" :key="key">
                                         <v-btn :color="i.color" large> </v-btn>
                                         <div>{{i.info}}</div>
                                     </v-col>
 
                                 </v-row>
-                                
                             </v-card-subtitle>
-                           
                         </v-card>
                     </v-menu>
 
@@ -105,6 +108,7 @@
                 </template>
         </v-app-bar>
         <v-navigation-drawer class="sheet" absolute right v-model="sheet" width="200px">
+            <v-icon class="pl-3 mb-2" @click="sheet = !sheet">mdi-close</v-icon>
             <pie-chart :chartdata="statisticData" :options="chartOptions" class='chart-graph' />
             <color-bar />
         </v-navigation-drawer>
@@ -152,8 +156,9 @@
         },
      
         computed: {
+         
             sidebarMenu() {
-            return this.$store.state.dataList;
+                return this.$store.state.dataList;
             },
             analysisData() {
                 return this.$store.state.analysisData;
@@ -195,10 +200,13 @@
                 self.show = true;
                 self.$store.state.selectedSido = val;
             },
+           
         },
         methods: {
             async getGeoJson(event){
             if (this.geojson == event.geojson) return null
+            this.sheet = false;
+            this.$store.state.showChart = false;
             this.$store.state.seleted = true;
             this.$store.state.loading = true;
             this.geojson = event.geojson

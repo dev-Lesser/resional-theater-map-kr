@@ -1,5 +1,5 @@
 <template>
-<v-card class="ma-3 pa-3" text>
+<v-card class="ma-3 pa-3" tile flat>
   
     <v-card-subtitle>색상 설명</v-card-subtitle>
     <v-row class="rows" v-for='i in colormap' :key='i.color'>
