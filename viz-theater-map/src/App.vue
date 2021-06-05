@@ -1,28 +1,23 @@
 <template>
   <v-app class='main'>
+    <Header />
     <v-main>
-      <Header />
       
-      <side-bar />
+      
       <map-view/>
-      <!-- <color-bar /> -->
     </v-main>
   </v-app>
 </template>
 
 <script>
-  import SideBar from '@/components/SideBar'
   import MapView from '@/components/MapView';
   import Header from '@/components/Header'
-  // import ColorBar from '@/components/ColorBar'
   import axios from 'axios'
   export default {
     name: 'App',
     components: {
-      SideBar,
       MapView,
       Header,
-      // ColorBar,
     },
     data() {
       return {

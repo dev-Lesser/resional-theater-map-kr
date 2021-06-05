@@ -1,47 +1,120 @@
 <template>
-<div>
-    <v-app-bar class="tool-bar" dense fixed app dark >
-        <v-card-text style="align-items: center;">
-            <v-row no-gutters> 
-                <v-col no-gutters xs="7" sm="8" md="9" class="pt-1 cols" >
-                    시즌1 <a href="https://soprize.so/question/51">"영화 한 편 보는데도 지역별 격차?"</a> 의 프로젝트 입니다.
-                    <div v-if="!show"> 좌측에서 시도명을 선택해주세요.</div>
-                    <v-chip  v-else-if="show & !loading" color="blue" small class="ml-5" @click="sheet = !sheet" >
+    <div>
+        <v-app-bar class="tool-bar" color="blue-grey darken-3" dark >
+            <v-layout>
+                <v-flex xs8 sm8 md8 id="cols">
+                    쏘프라이즈 시즌1 <a href="https://soprize.so/question/51">"영화 한 편 보는데도 지역별 격차?"</a> 의 프로젝트 입니다. 아래에서 시도명을 선택해주세요.
+                    <v-chip v-if="show & !loading" color="blue" small class="ml-5" @click="sheet = !sheet">
                         <v-icon>mdi-chart-pie</v-icon>
                         &nbsp; 분포그래프</v-chip>
-                 </v-col>
-                 <v-col no-gutters class="pt-2 cols-mobile" >
-                    <a href="https://soprize.so/question/51">링크</a>
-                    <v-chip  v-if="show & !loading" color="blue" small class="ml-5" @click="sheet = !sheet" >
+                </v-flex>
+                <v-flex xs10 sm10 md10 class="cols-mobile">
+                    <a href="https://soprize.so/question/51">프로젝트</a> &nbsp; 지역을 선택해주세요.
+                    <v-chip v-if="show & !loading" color="blue" small class="ml-5" @click="sheet = !sheet">
                         <v-icon>mdi-chart-pie</v-icon>
-                        &nbsp; 그래프</v-chip>
-                 </v-col>
-                 <v-col no-gutters  xs="5" sm="4" md="3" >
-                    <img class='ml-5' style="margin-top:7px;" :src="marker"  height=30px> 영화관 위치
-                 </v-col>
-                </v-row>
-        </v-card-text>
-        
-    </v-app-bar>
+                        &nbsp; 분포그래프</v-chip>
+                </v-flex>
+                <v-flex xs2 sm2 md2 class="desktop-explain">
+                    <v-menu v-for="i in colorInfo" :key=i.info> 
+                        <template v-slot:activator="{ on: menu, attrs }">
+                            <v-tooltip bottom>
+                            <template v-slot:activator="{ on: tooltip }">
+                                <img
+                                v-bind:src="i.img "
+                                v-bind="attrs"
+                                v-on="{ ...tooltip, ...menu }"
+                                height=30px
+                                class="mr-1"
+                                />
+                                
+                            </template>
+                            <span>{{ i.info }}</span>
+                            </v-tooltip>
+                        </template>
+                    </v-menu>
+                    <v-menu v-for="i in fieldInfo" :key=i.info> 
+                        <template v-slot:activator="{ on: menu, attrs }">
+                            <v-tooltip bottom>
+                            <template v-slot:activator="{ on: tooltip }">
+                                <v-btn
+                                class="ml-1"
+                                :color="i.color"
+                                v-bind="attrs"
+                                v-on="{ ...tooltip, ...menu }"
+                                small
+                                height=30px
+                                />
+                                
+                            </template>
+                            <span>{{ i.info }}</span>
+                            </v-tooltip>
+                        </template>
+                    </v-menu>
+                    
+                </v-flex>
+                <v-flex xs2 sm2 md2 class="mobile-explain">
+                    <v-menu style="z-index:500;" v-model="info_on" offset-y open-on-hover v-if="info">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" v-on="on" text icon>
+                            <v-icon small color="#FFFFFF">mdi-information-outline</v-icon>
+                            </v-btn>
+                        </template>
+                        <v-card width="300px" >
+                            <v-card-text class="explain_modal_head">아이콘 설명</v-card-text>
+                            <v-card-subtitle class="explain_modal_text">
+                                <v-row>
+                                    <v-col v-for="i in colorInfo" :key=i>
+                                        <img :src="i.img" height=30px> 
+                                        <div>{{i.info}}</div>
+                                    </v-col>
 
-     <v-navigation-drawer
-     class="sheet"
-      absolute
-      right
-      v-model="sheet"
-      width="200px"
-    >
-    
-    <pie-chart :chartdata="statisticData" :options="chartOptions"  class='chart-graph'/>
-    <color-bar />
-    </v-navigation-drawer>
-</div>
+                                </v-row>
+                                <v-card-text class="explain_modal_head">필드 색상 설명</v-card-text>
+                                <v-row>
+                                    <v-col :cols="4" v-for="i in fieldInfo" :key=i>
+                                        <v-btn :color="i.color" large> </v-btn>
+                                        <div>{{i.info}}</div>
+                                    </v-col>
+
+                                </v-row>
+                                
+                            </v-card-subtitle>
+                           
+                        </v-card>
+                    </v-menu>
+
+                    
+                    </v-flex>
+                </v-layout>
+                <template v-slot:extension>
+                    <v-tabs
+                        dark
+                        next-icon="mdi-menu-right"
+                        prev-icon="mdi-menu-left"
+                        show-arrows
+                        fixed 
+                        
+                        >
+                            <v-tab no-gutters v-for='(ival, ikey) in sidebarMenu' :key='ikey' v-on:click='getGeoJson(ival)'>
+                                <div v-if='!loading' > {{ ikey }} </div>
+                                <div v-else> {{ ikey }} </div>
+                            </v-tab>
+                    
+                    </v-tabs>
+                </template>
+        </v-app-bar>
+        <v-navigation-drawer class="sheet" absolute right v-model="sheet" width="200px">
+            <pie-chart :chartdata="statisticData" :options="chartOptions" class='chart-graph' />
+            <color-bar />
+        </v-navigation-drawer>
+    </div>
 </template>
 
 <script>
     import PieChart from '@/components/PieChart.js'
     import ColorBar from '@/components/ColorBar'
-    import marker from 'leaflet/dist/images/marker-icon.png'
+    import axios from 'axios'
+
     export default {
         components: {
             PieChart,
@@ -49,17 +122,44 @@
         },
         data() {
             return {
+                info_on: null,
+                showMenu: true,
+                info: true,
                 show: false,
                 sheet: false,
-                data: [0, 0, 0,  0],
-                marker: null
+                data: [0, 0, 0, 0],
+                marker: null,
+                green: null,
+                geojson: null,
+                transition: 'slide-y-reverse-transition',
+                direction: 'bottom',
+                colorInfo: [
+                    {img: '/marker-icon.png',info:'영화관 위치'},
+                    {img: '/green-circle.svg',info:'개수 10미만'},
+                    {img: '/yellow-circle.svg',info:'개수 100미만'},
+                    {img: '/orange-circle.svg',info:'개수 100이상'},
+        
+                    ],
+                fieldInfo: [
+                    {color: '#26678F',info:'3.5km 이하'},
+                    {color: '#6FC7A4',info:'8km 이하'},
+                    {color: '#FDC771',info:'13km 이하'},
+                    {color: '#D53E47',info:'13km 이상'},
+                    {color: '#000000',info:'분석불가'},
+                    ]
             }
         },
-        created(){
-            this.marker=marker
-        },
+     
         computed: {
-            loading(){
+            sidebarMenu() {
+            return this.$store.state.dataList;
+            },
+            analysisData() {
+                return this.$store.state.analysisData;
+            },
+    
+   
+            loading() {
                 return this.$store.state.loading;
             },
             sido() {
@@ -71,7 +171,7 @@
             filteredData() {
                 return this.$store.state.filterData
             },
-            chartOptions(){
+            chartOptions() {
                 return {
                     responsive: true,
                     maintainAspectRatio: false,
@@ -79,29 +179,216 @@
                         display: true,
                         text: this.sido + " 분포 비율"
                     },
-                    legend:{
+                    legend: {
                         position: 'bottom'
                     },
-                    tooltip:{
+                    tooltip: {
                         enabled: true
                     },
-                    
-                
                 }
             }
-            
-            
         },
         watch: {
             sido: function(val) {
                 let self = this;
-                self.show=true;
+                self.show = true;
                 self.$store.state.selectedSido = val;
             },
-           
-            
         },
         methods: {
+            async getGeoJson(event){
+            if (this.geojson == event.geojson) return null
+            this.$store.state.seleted = true;
+            this.$store.state.loading = true;
+            this.geojson = event.geojson
+            this.$store.state.center = event.center
+            this.$store.state.fillColor = event.color
+            var response = await axios.get(`https://lesser-korea-geojson.s3.ap-northeast-2.amazonaws.com/${this.geojson}`)
+            this.$store.state.geojsonData = response.data
+            var data = await this.filterSido(this.geojson.split('.')[0])
+            this.$store.state.loading = false
+            this.$store.state.filterData = data
+            
+        },
+      
+        filterSido(sido){
+            let self = this;
+            switch(sido){
+                case 'seoul':
+                    var i =0;
+                    // 
+                    self.$store.state.selectedSido="서울특별시"
+                    for (i in self.analysisData){
+                        if(self.analysisData[i].sido == '서울특별시'){
+                            self.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                    break
+                case 'busan':
+                    
+                    this.$store.state.selectedSido="부산광역시"
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '부산광역시'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                
+                    break
+                case 'daegu':
+                    
+                    this.$store.state.selectedSido="대구광역시"
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '대구광역시'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                
+                    break
+                case 'incheon':
+                    
+                    this.$store.state.selectedSido="인천광역시"
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '인천광역시'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                    break
+                case 'gwangju':
+                    
+                    this.$store.state.selectedSido="광주광역시"
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '광주광역시'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                    break
+                case 'daejeon':
+                    
+                    this.$store.state.selectedSido="대전광역시"
+                    
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '대전광역시'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                    break
+                case 'ulsan':
+                    
+                    this.$store.state.selectedSido="울산광역시"
+                    
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '울산광역시'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                    break
+                case 'sejong':
+                    
+                    self.$store.state.selectedSido="세종특별자치시"
+                    
+                    for (i in self.analysisData){
+                        if(self.analysisData[i].sido == '세종특별자치시'){
+                            self.$store.state.filterData.push(self.analysisData[i])
+                        }
+                    }
+                    break
+                case 'gyeonggi':
+                    
+                    this.$store.state.selectedSido="경기도"
+                    
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '경기도'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                    break
+                case 'gangwon':
+                    
+                    this.$store.state.selectedSido="강원도"
+                    
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '강원도'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                    break
+                case 'chungbuk':
+                    
+                    this.$store.state.selectedSido="충청북도"
+                    
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '충청북도'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                    break
+                case 'chungnam':
+                    
+                    this.$store.state.selectedSido="충청남도"
+                    
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '충청남도'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                    break
+                case 'jeonbuk':
+                    
+                    this.$store.state.selectedSido="전라북도"
+                    
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '전라북도'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                    break
+                case 'jeonnam':
+                    
+                    this.$store.state.selectedSido="전라남도"
+                    
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '전라남도'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                    break
+                case 'kyeongbuk':
+                    
+                    this.$store.state.selectedSido="경상북도"
+                    
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '경상북도'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                    break
+                case 'kyeongnam':
+                    
+                    this.$store.state.selectedSido="경상남도"
+                    
+                    for (i in this.analysisData){
+                        if(this.analysisData[i].sido == '경상남도'){
+                            this.$store.state.filterData.push(this.analysisData[i])
+                        }
+                    }
+                    break
+                case 'jeju':
+                    
+                    self.$store.state.selectedSido="제주특별자치도"
+                    
+                    for (i in self.analysisData){
+                        if(self.analysisData[i].sido == '제주특별자치도'){
+                            self.$store.state.filterData.push(self.analysisData[i])
+                        }
+                    }
+                    break
+
+                default:
+                    console.log('error')
+            }
+            return this.$store.state.filterData;
+        }
+    
         }
     }
 </script>
@@ -110,34 +397,56 @@
     .tool-bar {
         z-index: 100;
     }
-    .sheet{
+    .sheet {
         z-index: 1000;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-top:30px;
+        padding-top: 30px;
     }
-    .chart-graph{
+    .chart-graph {
         width: 200px;
         height: 200px;
         /* float: left; */
         /* position: absolute; */
     }
-    img{
-        z-index:0;
+    .desktop-explain {
+        display: flex;
     }
-    path{
-        z-index:0
+    img {
+        z-index: 0;
     }
+    path {
+        z-index: 0
+    }
+    /* 모바일로 하려고 할때 display none */
+    @media screen and (max-width: 600px) {
+        #cols {
+            display: none;
 
-     @media screen and (max-width: 600px){
-    .cols{
+        }
+        .desktop-explain {
             display: none;
         }
-    }
-    @media screen and (min-width: 600px){
-    .cols-mobile{
-            display: none;
+        .cols-mobile {
+            display: flex;
+            align-items:center;
+            font-size:13px;
         }
     }
+    /* 데스크탑으로 하려고 할때 display none */
+    @media screen and (min-width: 600px) {
+        .cols-mobile {
+            display: none;
+        }
+        .mobile-explain {
+            display: none;
+        }
+        #cols {
+            display: flex;
+            font-size:13px;
+            align-items:center;
+        }
+    }
+    
 </style>

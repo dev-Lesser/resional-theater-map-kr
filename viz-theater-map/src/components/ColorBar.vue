@@ -4,7 +4,7 @@
     <v-card-subtitle>색상 설명</v-card-subtitle>
     <v-row class="rows" v-for='i in colormap' :key='i.color'>
         <v-col :cols='3' align-center>
-            <v-chip x-large :color="i.color">&nbsp;&nbsp;</v-chip>
+            <v-chip x-large :color="i.color">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</v-chip>
         </v-col>
         <v-col :cols='9' align-center>
             {{ i.value }}

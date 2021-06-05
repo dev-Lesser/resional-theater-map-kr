@@ -6,8 +6,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     loading: false,
+    selected: false,
     sido: '서울',
-    center: [37.9,127],
+    center: [37.5,     127],
     geojson: 'seoul.geo.json',
     geojsonData: null,
     fillColor: '#53CFDA',
@@ -23,7 +24,7 @@ export default new Vuex.Store({
       {color:'#D53E47',value:'13.6km 이상'}
     ],
     dataList:{
-        '서울':{color:'#53CFDA', center: [37.57,     127],      geojson:'seoul.geo.json',},
+        '서울':{color:'#53CFDA', center: [37.47,     127],      geojson:'seoul.geo.json',},
         '부산':{color:'#89903A', center: [35.2,   129.13],      geojson:'busan.geo.json',},
         '대구':{color:'#FF7994', center: [35.79,  128.58],      geojson:'daegu.geo.json',},
         '인천':{color:'#FF8860', center: [37.469, 126.57],      geojson:'incheon.geo.json',    },

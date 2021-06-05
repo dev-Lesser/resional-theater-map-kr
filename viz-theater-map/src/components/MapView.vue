@@ -5,17 +5,17 @@
     <v-overlay :value="loading" :z-index="2"></v-overlay>
     <l-map v-if='!loading' :zoom="zoom" :center="changedCenter" style="height: 100%; width: 100%" :min-zoom="6" :max-zoom="15">
       <l-tile-layer :url="url" :attribution="attribution" />
-      <l-geo-json :geojson="geojsonData" :options="options" :options-style="styleFunction" />
+      <l-geo-json v-if="$store.state.seleted" :geojson="geojsonData" :options="options" :options-style="styleFunction" />
 
-        <v-marker-cluster :options="clusterOptions">
-          <v-marker v-for="(i,key) in theaterData"  :key="key" :lat-lng="[i.y, i.x]"> <!-- 영화관 위치 -->
+        <v-marker-cluster v-if="$store.state.seleted" :options="clusterOptions">
+          <v-marker v-for="(i,key) in theaterData" :key="key" :lat-lng="[i.y, i.x]"> <!-- 영화관 위치 -->
             <v-popup :content="i.poi_nm"></v-popup>
           </v-marker>
         </v-marker-cluster>
     </l-map>
     <v-card v-else class='now-loading-page'>
       <v-card-title>
-        파일을 분석하고 있습니다. 잠시만 기다려 주세요...
+         파일을 분석하고 있습니다. 잠시만 기다려 주세요...
         <v-progress-linear
       color="cyan"
     ></v-progress-linear>
@@ -31,6 +31,7 @@ import * as Vue2Leaflet from 'vue2-leaflet'
 
 import {LMap, LTileLayer, LGeoJson} from "vue2-leaflet";
 import axios from 'axios'
+import marker from '@/assets/marker.png'
 import 'leaflet/dist/leaflet.css'
 export default {
     name: 'MapView',
@@ -49,6 +50,7 @@ export default {
     data() {
       return {
         show: true,
+        marker: marker,
         enableTooltip: true,
         zoom: 10,
         center: [37.9, 127],
@@ -62,25 +64,21 @@ export default {
         num1:0,
         num2:0,
         num3:0,
-        num4:0
+        num4:0,
+        
       }
     },
     created(){
       delete Icon.Default.prototype._getIconUrl;
 
       Icon.Default.mergeOptions({
-          iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-          iconUrl: require('leaflet/dist/images/marker-icon.png'),
-          shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+          iconRetinaUrl: require('@/assets/marker.png'),
+          iconUrl: require('@/assets/marker.png'),
+          shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+          iconSize: [20,20],
       });
     },
     async mounted() {
-      // delete L.Icon.Default.prototype._getIconUrl;
-      // L.Icon.Default.mergeOptions({
-      //   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-      //   iconUrl: require('leaflet/dist/images/marker-icon.png'),
-      //   shadowUrl: require('leaflet/dist/images/marker-shadow.png')
-      // });
       this.$store.state.loading = true;
       var response = await axios.get(`https://lesser-korea-geojson.s3.ap-northeast-2.amazonaws.com/seoul.geo.json`)
       var data = response.data
@@ -156,18 +154,15 @@ export default {
     watch: {
       changedCenter: function(center) {
         [this.num1,this.num2,this.num3,this.num4] = [0,0,0,0]
-        // let self = this;
         this.geojson = this.$store.state.geojsonData
         this.$store.state.center = center;
-        // console.log(this.$store.state.statisticData)
       },
       changedSido: function(){
-        // let self = this;
         [this.num1,this.num2,this.num3,this.num4] = [0,0,0,0]
-        // self.$store.state.statisticData = [0,0,0,0]
         var data = this.$store.state.statisticData
         this.$store.state.statisticData = data
-      }
+      },
+
 
     },
     methods: {
