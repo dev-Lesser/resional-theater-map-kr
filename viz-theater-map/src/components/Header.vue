@@ -239,6 +239,7 @@
                 var data = await this.filterSido(this.geojson.split('.')[0])
                 this.$store.state.loading = false
                 this.$store.state.filterData = data
+                this.sheet = true;
                 
             },
       
