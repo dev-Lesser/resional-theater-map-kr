@@ -52,9 +52,8 @@ export default {
         show: true,
         marker: marker,
         enableTooltip: true,
-        zoom: 10,
         img: loadingImg,
-        center: [37.9, 127],
+        center: [35.9, 127],
         fillColor: "",
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution: '',
@@ -81,15 +80,19 @@ export default {
     },
     async mounted() {
       this.$store.state.loading = true;
+      
       var response = await axios.get(`https://lesser-korea-geojson.s3.ap-northeast-2.amazonaws.com/seoul.geo.json`)
       var data = response.data
       this.geojson = data;
       this.$store.state.geojsonData = this.geojson
-      this.$store.state.center = [37.57, 127];
+      this.$store.state.center = [36.1, 127.4];
       this.$store.state.loading = false;
 
     },
     computed: {
+      zoom(){
+        return this.$store.state.zoom;
+      },
 
       loading(){
           return this.$store.state.loading;
@@ -115,15 +118,13 @@ export default {
       },
 
       options() {
-        
         return {
-          
           onEachFeature: this.onEachFeatureFunction
         };
       },
       styleFunction() {
         return (res) => {
-          
+
           return {
             weight: 1,
             color: '#000000',
