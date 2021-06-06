@@ -3,16 +3,16 @@
         <v-app-bar class="tool-bar" color="blue-grey darken-3" dark height=100 >
             <v-layout>
                 <v-flex xs8 sm8 md8 id="cols">
-                    쏘프라이즈 시즌1 <a href="https://soprize.so/question/51">"영화 한 편 보는데도 지역별 격차?"</a> 의 프로젝트 입니다. 
-                    <div class='highlight-info'>&nbsp; 아래에서 지역을 선택해주세요.</div>
-                    <v-chip v-if="show & !loading" color="red darken-2" small class="highlight-info ml-5" @click="sheet = !sheet">
+                    쏘프라이즈 시즌1 <a href="https://soprize.so/question/51">"영화 한 편 보는데도 지역별 격차?"</a> 의 프로젝트 입니다. &nbsp; 
+                    <v-chip outlined small class='highlight-info'>아래에서 지역을 선택해주세요.</v-chip>
+                    <v-chip v-if="show & !loading" color="red darken-2" small class="ml-5" @click="sheet = !sheet">
                         <v-icon>mdi-chart-pie</v-icon>
                         &nbsp; 분포그래프</v-chip>
                 </v-flex>
                 <v-flex xs10 sm10 md10 class="cols-mobile">
                     <a href="https://soprize.so/question/51">프로젝트</a> 
                     <div class='highlight-info'>&nbsp; 지역을 선택해주세요.</div>
-                    <v-chip v-if="show & !loading" color="red darken-2" small class="highlight-info ml-5" @click="sheet = !sheet">
+                    <v-chip v-if="show & !loading" color="red darken-2" small class="ml-5" @click="sheet = !sheet">
                         <v-icon>mdi-chart-pie</v-icon>
                         &nbsp; 분포그래프</v-chip>
                 </v-flex>
@@ -449,7 +449,7 @@
         display: flex;
     }
     .highlight-info{
-        animation-duration: 800ms;
+        animation-duration: 600ms;
         animation-name: blink;
         animation-iteration-count: infinite;
         animation-direction: alternate;
@@ -459,7 +459,7 @@
             opacity: 1;
         }
         to {
-            opacity: 0.4;
+            opacity: 0;
         }
     }
     img {
