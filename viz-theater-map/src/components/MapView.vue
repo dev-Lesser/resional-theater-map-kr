@@ -6,7 +6,7 @@
         <l-control-scale position="bottomleft" :imperial="false" :metric="true"></l-control-scale>
 
         <l-geo-json v-if="$store.state.seleted" :geojson="geojsonData" :options="options" :options-style="styleFunction" />
-
+        <l-geo-json v-else :geojson="initGeoJsonData" :options="initOptions" :options-style="initStyleFunction" />
         <v-marker-cluster v-if="$store.state.seleted" :options="clusterOptions">
           <v-marker v-for="(i,key) in theaterData" :key="key" :lat-lng="[i.y, i.x]"> <!-- 영화관 위치 -->
             <v-popup :content="i.poi_nm"></v-popup>
@@ -41,6 +41,7 @@ import { Icon } from 'leaflet';
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 import * as Vue2Leaflet from 'vue2-leaflet'
 import loadingImg from '@/assets/loading.png'
+import initGeoJsonData from '@/assets/korea.geo.json'
 import {LMap, LTileLayer, LGeoJson,LIcon,LControlScale, LTooltip} from "vue2-leaflet";
 import marker from '@/assets/marker.png'
 import 'leaflet/dist/leaflet.css'
@@ -61,6 +62,7 @@ export default {
 
     data() {
       return {
+        initGeoJsonData: initGeoJsonData,
         iconSize: 50,
         show: true,
         marker: marker,
@@ -97,7 +99,6 @@ export default {
       this.$store.state.loading = false;
       this.$store.state.minZoom = 7
       this.$store.state.maxZoom = 7
-      // await this.showInitialAllChart()
       
     },
     computed: {
@@ -148,9 +149,42 @@ export default {
           onEachFeature: this.onEachFeatureFunction
         };
       },
+      initOptions() {
+        return {
+          onEachFeature: this.initOnEachFeatureFunction
+        };
+      },
+      initStyleFunction() {
+        return (res) => {
+          return {
+            weight: 1,
+            color: '#000000',
+            opacity: 1,
+            fillColor: this.initPickColor(res.properties.CTP_KOR_NM),
+            fillOpacity: 0.5
+          };
+        };
+      },
+
+      initOnEachFeatureFunction() {
+        if (!this.enableTooltip) {
+          return () => {};
+        }
+        return (feature, layer) => {
+          layer.bindTooltip(
+            "<div>구분코드:" +
+            feature.properties['CTPRVN_CD'] +
+            "</div><div>동명: " +
+            feature.properties['CTP_KOR_NM'] +
+            "</div>", {
+              permanent: false,
+              sticky: false
+            }
+          );
+        };
+      },
       styleFunction() {
         return (res) => {
-
           return {
             weight: 1,
             color: '#000000',
@@ -160,6 +194,7 @@ export default {
           };
         };
       },
+      
       
       onEachFeatureFunction() {
         if (!this.enableTooltip) {
@@ -194,7 +229,20 @@ export default {
 
     },
     methods: {
-     
+      initPickColor(sido){ // random color generater
+        var newSido = sido.substring(0,2)
+        for (var i in this.$store.state.dataList){
+          if (i == '전체') continue;
+          if (i == newSido){
+            return this.$store.state.dataList[i].color
+          }
+          else if (i == sido[0]+sido[2]){
+            var key = sido[0]+sido[2];
+            return this.$store.state.dataList[key].color
+          }
+        }
+        
+      },
       pickColor(dong_name){
         let self = this;
         
