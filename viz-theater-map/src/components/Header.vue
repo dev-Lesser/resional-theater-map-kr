@@ -3,18 +3,32 @@
         <v-app-bar class="tool-bar" color="blue-grey darken-3" dark height=100 >
             <v-layout>
                 <v-flex xs8 sm8 md8 id="cols">
+                    <div>
                     쏘프라이즈 시즌1 <a href="https://soprize.so/question/51">"영화 한 편 보는데도 지역별 격차?"</a> 의 프로젝트 입니다. &nbsp; 
                     <v-chip outlined small class='highlight-info'>아래에서 지역을 선택해주세요.</v-chip>
                     <v-chip v-if="show & !loading" color="red darken-2" small class="ml-5" @click="sheet = !sheet">
                         <v-icon>mdi-chart-pie</v-icon>
-                        &nbsp; 분포그래프</v-chip>
+                        &nbsp; 분포그래프
+                    </v-chip>
+                    </div>
+                    <div style="display:flex;justify-contents:center;align-items:center;">
+                        &#169; 2021. <v-chip outlined x-small class="ma-1" color="red" href="https://github.com/dev-Lesser">dev-Lesser</v-chip> All Rights Reserved.
+
+                    </div>
+
                 </v-flex>
                 <v-flex xs10 sm10 md10 class="cols-mobile">
+                    <div>
                     <a href="https://soprize.so/question/51">프로젝트</a> 
-                    <div class='highlight-info'>&nbsp; 지역을 선택해주세요.</div>
+                    <v-chip outlined small class='highlight-info ma-1'>지역을 선택해주세요.</v-chip>
                     <v-chip v-if="show & !loading" color="red darken-2" small class="ml-5" @click="sheet = !sheet">
                         <v-icon>mdi-chart-pie</v-icon>
-                        &nbsp; 분포그래프</v-chip>
+                        &nbsp; 그래프</v-chip>
+                    </div>
+                    <div style="display:flex;justify-contents:center;align-items:center;">
+                        &#169; 2021. <v-chip outlined x-small class="ma-1" color="red" href="https://github.com/dev-Lesser">dev-Lesser</v-chip> All Rights Reserved.
+
+                    </div>
                 </v-flex>
                 <v-flex xs4 sm4 md4 class="desktop-explain">
                     <v-icon class="mr-3" color="#FFFFFF">mdi-information-outline</v-icon>
@@ -478,7 +492,7 @@
             display: none;
         }
         .cols-mobile {
-            display: flex;
+            /* display: flex; */
             align-items:center;
             font-size:13px;
         }
@@ -492,7 +506,7 @@
             display: none;
         }
         #cols {
-            display: flex;
+            display: grid;
             font-size:13px;
             align-items:center;
         }
