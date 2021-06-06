@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+analysis.json
+theater.json
 # C extensions
 *.so
 
