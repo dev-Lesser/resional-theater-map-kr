@@ -15,6 +15,7 @@
     "postcss": "8.2.10",
     "vue": "^2.6.11",
     "vue-chartjs": "^3.5.1",
+    "vue-gtag": "^1.16.1",
     "vue2-leaflet": "^2.7.0",
     "vue2-leaflet-markercluster": "^3.1.0",
     "vuetify": "^2.5.3",

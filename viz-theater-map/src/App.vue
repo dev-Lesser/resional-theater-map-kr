@@ -27,6 +27,8 @@
     async mounted() {
       await this.getAnalysisData();
       await this.getTheaterData();
+      // console.log(process.env)
+      // console.log(process.env.VUE_APP_G_ID)
   
     },
     computed: {
